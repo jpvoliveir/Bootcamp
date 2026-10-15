@@ -3,7 +3,20 @@ TaskTracker - Aplicacao CLI de gerenciamento de tarefas.
 
 Bootcamp II - Fase 2 (Entrega Intermediaria)
 Autor: Joao Pedro Vieira de Oliveira
+
+Implementa o algoritmo planejado na Fase 1:
+menu continuo, cadastro de tarefas com validacao de dados
+e listagem dos registros armazenados em memoria.
 """
+
+# Prioridades aceitas pelo sistema. A chave e a versao normalizada
+# (minuscula e sem acento) e o valor e o rotulo exibido ao usuario.
+PRIORIDADES_VALIDAS = {
+    "alta": "Alta",
+    "media": "Média",
+    "média": "Média",
+    "baixa": "Baixa",
+}
 
 STATUS_INICIAL = "Pendente"
 
@@ -19,13 +32,41 @@ def exibir_menu():
     print("=" * 40)
 
 
+def ler_titulo():
+    """
+    Le o titulo da tarefa.
+
+    Regra de negocio: campo obrigatorio. Entradas vazias ou compostas
+    apenas por espacos em branco sao rejeitadas e o prompt se repete.
+    """
+    while True:
+        titulo = input("Titulo da tarefa: ").strip()
+        if titulo:
+            return titulo
+        print("[ERRO] O titulo e obrigatorio e nao pode ficar em branco.")
+
+
+def ler_prioridade():
+    """
+    Le a prioridade da tarefa.
+
+    Regra de negocio: validacao estrita. Aceita exclusivamente
+    Alta, Media (ou Média) e Baixa, ignorando maiusculas/minusculas.
+    """
+    while True:
+        entrada = input("Prioridade (Alta / Media / Baixa): ").strip().lower()
+        if entrada in PRIORIDADES_VALIDAS:
+            return PRIORIDADES_VALIDAS[entrada]
+        print("[ERRO] Prioridade invalida. Use apenas: Alta, Media ou Baixa.")
+
+
 def cadastrar_tarefa(tarefas):
-    """Coleta os dados e adiciona a tarefa a lista."""
+    """Coleta os dados, aplica as validacoes e adiciona a tarefa a lista."""
     print("\n--- CADASTRO DE NOVA TAREFA ---")
 
-    titulo = input("Titulo da tarefa: ").strip()
+    titulo = ler_titulo()
     descricao = input("Descricao: ").strip()
-    prioridade = input("Prioridade (Alta / Media / Baixa): ").strip()
+    prioridade = ler_prioridade()
     data_limite = input("Data limite (DD/MM/AAAA): ").strip()
 
     tarefa = {
