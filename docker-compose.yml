@@ -1,0 +1,13 @@
+services:
+  tasktracker-app:
+    # Constroi a imagem a partir do Dockerfile na raiz do projeto.
+    build: .
+    image: tasktracker-app
+    container_name: tasktracker-app
+
+    # Mantem o canal de entrada de dados (STDIN) aberto para que
+    # as chamadas input() da CLI recebam o que o usuario digita.
+    stdin_open: true
+
+    # Aloca um terminal virtual (TTY), simulando o console do usuario.
+    tty: true
